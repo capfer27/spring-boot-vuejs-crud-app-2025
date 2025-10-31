@@ -1,0 +1,9 @@
+--CREATE DATABASE IF NOT EXISTS springVueDB;
+--
+---- This script will create a table and insert some data on startup.
+--CREATE TABLE IF NOT EXISTS patients (
+--    id SERIAL PRIMARY KEY,
+--    name VARCHAR(255) NOT NULL
+--);
+--INSERT INTO patients (name) VALUES ('Alice') ON CONFLICT DO NOTHING;
+--INSERT INTO patients (name) VALUES ('Bob') ON CONFLICT DO NOTHING;

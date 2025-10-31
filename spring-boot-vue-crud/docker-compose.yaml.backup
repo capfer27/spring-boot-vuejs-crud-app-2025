@@ -1,0 +1,68 @@
+#version: '3.8'
+#services:
+#  database:
+#    image: 'postgres:18-alpine'
+#    ports:
+#      - '15432:5432'
+#    environment:
+#      - 'POSTGRES_DB=springVueDB'
+#      - 'POSTGRES_PASSWORD=secret'
+#      - 'POSTGRES_USER=myuser'
+#    # Use a named volume to persist data
+#    volumes:
+#      - postgres-data:/var/lib/postgresql/data
+#
+#  app:
+#    build: . # Look for the Dockerfile in the current directory
+#    ports:
+#      - "18080:8080"
+#    depends_on:
+#      - database
+#    environment:
+#      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/springVueDB'
+#      - 'SPRING_DATASOURCE_USERNAME=myuser'
+#      - 'SPRING_DATASOURCE_PASSWORD=secret'
+#volumes:
+#  postgres-data:
+
+#Automatically creating a database with Spring Boot and Docker Compose can be achieved using two main methods:
+#leveraging the database's built-in initialization features or relying on Spring Data JPA to generate the schema from your entities.
+#The following guide demonstrates both approaches.
+#Method 1: Use the database's built-in initialization
+#This method uses a volume to mount SQL scripts from your project into a special directory within the database container.
+#The database container automatically executes these scripts on startup
+
+services:
+  app:
+    # Your Spring Boot app configuration
+    build: .
+    ports:
+      - "18080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/springVueDB
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: password
+    environment:
+      - 'POSTGRES_URL=jdbc:postgresql://postgres-db:5432/springVueDB'
+      - 'POSTGRES_DB=springVueDB'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=postgres'
+    depends_on:
+      postgres-db:
+        condition: service_healthy # Wait for the database to be ready before starting the app
+
+  postgres-db:
+    image: "postgres:18-alpine"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: springVueDB
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d # Mount the init script directory
+    healthcheck: # Healthcheck ensures the database is ready for connections
+      test: ["CMD-SHELL", "pg_isready -U postgres -d springVueDB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "15432:5432"

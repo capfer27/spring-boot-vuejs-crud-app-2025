@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: spring-boot-vue-crud
+  datasource:
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}  datasource:
+    url: jdbc:postgresql://localhost:5432/springVueDB
+    username: postgres
+    password: password
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+sql:
+  init:
+    mode: always

@@ -1,0 +1,9 @@
+1. git clone the-project-url on github
+2.cd to project and run: docker compose up -d --build
+
+
+Steps for creating a common network
+1. docker network create --attachable -d bridge vuejsspringv2
+2. docker run -it -d --name psql-vue-spring-container -p 5434:5432 --network vuejsspringv2 -e POSTGRES_PASSWORD=example --restart always -v postgresql_data_container:/var/lib/postgresql postgres:latest
+3. docker run -it -d --name spring-vue-adminer -p 9090:8080 --network vuejsspringv2 -e ADMINER_DEFAULT_SERVER=psql-vue-spring-container --restart always adminer:latest
+

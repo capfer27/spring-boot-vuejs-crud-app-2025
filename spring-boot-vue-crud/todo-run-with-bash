@@ -1,0 +1,166 @@
+To create a shell script (.sh file) to run Docker commands, you need to write a text file with a list of commands, give it execute permissions, and then run it. This is a great way to automate complex or repetitive Docker tasks.
+
+Sample .sh file to manage a container
+This script automates the process of building a Docker image and running a container from it. This is useful for development environments where you frequently rebuild your application.
+
+run-app.sh
+
+#!/bin/bash
+
+# A simple script to build and run a Docker container for a sample web application.
+
+# Set variables for the container
+IMAGE_NAME="my-web-app"
+CONTAINER_NAME="my-running-app"
+PORT="8080"
+
+# Stop and remove any existing container with the same name
+echo "Removing existing container (if any)..."
+docker stop $CONTAINER_NAME > /dev/null 2>&1
+docker rm $CONTAINER_NAME > /dev/null 2>&1
+
+# Build the Docker image
+echo "Building Docker image: $IMAGE_NAME"
+docker build -t $IMAGE_NAME .
+
+# Run the new container
+echo "Running new container: $CONTAINER_NAME on port $PORT"
+docker run -d --name $CONTAINER_NAME -p $PORT:8080 $IMAGE_NAME
+
+# Check the status of the new container
+echo "Container status:"
+docker ps --filter "name=$CONTAINER_NAME"
+
+
+How to use the script
+1. Create the file: Open a text editor and save the script with the .sh extension (e.g., run-app.sh). The first line, #!/bin/bash, is called a "shebang" and tells the system to execute the file using the Bash interpreter.
+
+2. Add your project files: Make sure the script is in the same directory as your application's source code and Dockerfile. The docker build command in the script assumes the Dockerfile is in the current directory (.).
+
+3.Make it executable: Before you can run the script, you need to give it execute permissions.
+
+chmod +x run-app.sh
+
+4. Run the script: Now you can execute the script from your terminal:
+./run-app.sh
+
+Alternatively, you can specify the interpreter directly:
+bash run-app.sh
+
+
+Advanced scripting for Docker
+You can expand on this basic pattern to create more robust scripts for production environments or complex workflows.
+Advanced script using a function
+
+#!/bin/bash
+set -e # Exit immediately if a command exits with a non-zero status.
+
+# Function to run the application
+run_app() {
+  local image_name="my-web-app"
+  local container_name="my-web-app-container"
+  local port="8080"
+  local network_name="my-project-network"
+
+  # Create a network if it doesn't exist
+  docker network inspect $network_name >/dev/null 2>&1 || docker network create $network_name
+
+  # Stop and remove previous container
+  if [ $(docker ps -q -f name=$container_name) ]; then
+    echo "Stopping and removing existing container: $container_name"
+    docker stop $container_name
+    docker rm $container_name
+  fi
+
+  # Build the image with a build argument
+  docker build -t $image_name --build-arg APP_VERSION="1.0" .
+
+  # Run the new container with additional flags
+  docker run -d --name $container_name --network $network_name -p $port:8080 $image_name
+
+  echo "Application is running. Access it at http://localhost:$port"
+}
+
+# Run the function
+run_app
+
+
+
+
+
+------- Sample 2 --------------------
+
+#!/bin/bash
+set -e
+
+# Define variables for your project
+PROJECT_NAME="spring-boot-vue-crud"
+IMAGE_TAG="latest"
+
+echo "### Starting Docker build and compose for '$PROJECT_NAME' ###"
+
+# Clean up any old running containers and images
+echo "Stopping and removing old containers..."
+docker-compose -p $PROJECT_NAME down --rmi all
+
+# Build the Docker images defined in docker-compose.yml
+echo "Building new images..."
+docker-compose -p $PROJECT_NAME build --no-cache
+
+# Run the containers using docker-compose
+echo "Starting services..."
+docker-compose -p $PROJECT_NAME up -d
+
+echo "### Deployment completed. ###"
+
+# Optionally, show the logs
+echo "Showing logs for running services..."
+docker-compose -p $PROJECT_NAME logs -f
+
+
+
+Explanation of the script
+
+#!/bin/bash: The shebang line specifies that the script should be executed with Bash.
+
+set -e: This is an important safety command. It causes the script to exit immediately if any command returns a non-zero exit status, which signals a failure.
+
+PROJECT_NAME: A variable for your project name. This is passed to the docker-compose commands using the -p flag to help keep your project's containers and images separate from others.
+
+docker-compose down --rmi all: This command is critical for ensuring a clean slate.
+
+down: Stops and removes the containers and networks for the project.
+
+--rmi all: Removes all images used by any service.
+
+docker-compose build --no-cache:
+
+build: Builds or rebuilds the service images defined in your docker-compose.yml.
+
+--no-cache: This option forces Docker to rebuild images from scratch without using cached layers, ensuring the images are fully up-to-date. This is useful in a CI/CD environment.
+
+docker-compose up -d:
+
+up: Creates and starts the containers, networks, and volumes defined in the docker-compose.yml file.
+
+-d: Runs the containers in detached mode, meaning they run in the background.
+
+docker-compose logs -f: Displays the logs from all the running services and follows them, which is useful for observing the startup process.
+
+
+How to use the script
+
+1. Save the file: Save the code above into a file named run-compose.sh (or a similar name) in the same directory as your docker-compose.yml and Dockerfile.
+
+2. Make it executable: Give the script execute permissions from your terminal:
+
+sh
+chmod +x run-compose.sh
+
+3. Run the script: Execute the script from the same directory.
+
+sh
+./run-compose.sh
+
+
+
