@@ -10,21 +10,22 @@
 * Gradle 8.14+
 
 **Локальный запуск через Docker Compose**
+
 1. Клонируйте репозиторий:
    `git clone https://github.com/capfer27/spring-boot-vuejs-crud-app-2025.git`
-2. `cd spring-boot-vue-crud`
-3. `./app.sh`
-4. Посмотреть приложение по ссылке: http://localhost:5173/ 
+2. `docker compose up -d --build`
+3. `cd front-vue-crud`
+4. `npm run dev`
+5. Посмотреть приложение по ссылке: http://localhost:5173/ 
 
 **Остановка сервисов:** 
    - `CTRL + C`
-   - `docker-compose down`
+   - `cd ../ && docker compose down`
 
 **Скриншоты**
   
-  - ![img_1.png](img_1.png)  
+  - ![img_1.png](img_1.png)
+
+  - ![img.png](img.png)
 
   - ![img_2.png](img_2.png)
-
-  - ![img_3.png](img_3.png)
-

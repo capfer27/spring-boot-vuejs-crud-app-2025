@@ -7,7 +7,7 @@ IMAGE_TAG="latest"
 
 echo "### Starting Gradle clean and build for '$PROJECT_NAME' ###"
 
-./gradlew clean build
+cd cd spring-boot-vue-crud && ./gradlew clean build
 
 echo "### Starting Docker build and compose for '$PROJECT_NAME' ###"
 
@@ -26,7 +26,7 @@ docker-compose -p $PROJECT_NAME up -d
 echo "### Deployment completed. ###"
 
 echo "### Starting Vue Frontend. ###"
- cd ../ && cd ./front-vue-crud && npm run dev
+cd ./front-vue-crud && npm run dev
 
 
 # Optionally, show the logs
