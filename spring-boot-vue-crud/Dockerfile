@@ -11,7 +11,7 @@
 #EXPOSE 18080
 #ENTRYPOINT ["java", "-jar", "/app/spring-boot-vue-crud.jar"]
 
-FROM openjdk:21-jdk
+FROM eclipse-temurin:21-jdk-alpine
 LABEL maintainer="capfer27@gmail.com"
 LABEL version="0.0.1-SNAPSHOT"
 LABEL description="Java Spring Boot Vue JS CRUD application"

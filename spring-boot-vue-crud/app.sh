@@ -25,6 +25,10 @@ docker-compose -p $PROJECT_NAME up -d
 
 echo "### Deployment completed. ###"
 
+echo "### Starting Vue Frontend. ###"
+ cd ../ && cd ./front-vue-crud && npm run dev
+
+
 # Optionally, show the logs
-echo "Showing logs for running services..."
-docker-compose -p $PROJECT_NAME logs -f
+#echo "Showing logs for running services..."
+#docker-compose -p $PROJECT_NAME logs -f
