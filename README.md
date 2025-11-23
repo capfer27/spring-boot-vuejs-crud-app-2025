@@ -1,8 +1,30 @@
-# spring-boot-vuejs-crud-app-2025
+# Simple Spring Boot VUE-JS CRUD APP
 
-Run instructions: 
-1. Make sure docker is installed and running.
+🚀 **Запуск проекта**
 
-2. Run The application by:
- - cd spring-boot-vue-crud && ./app.sh
- - cd ./front-vue-crud && npm run dev
+**Предварительные требования**
+
+* JDK 21 || 17+
+* Docker 20.10+
+* Docker Compose 2.4+
+* Gradle 8.14+
+
+**Локальный запуск через Docker Compose**
+1. Клонируйте репозиторий:
+   `git clone https://github.com/capfer27/spring-boot-vuejs-crud-app-2025.git`
+2. `cd spring-boot-vue-crud`
+3. `./app.sh`
+4. Посмотреть приложение по ссылке: http://localhost:5173/ 
+
+**Остановка сервисов:** 
+   - `CTRL + C`
+   - `docker-compose down`
+
+**Скриншоты**
+  
+  - ![img_1.png](img_1.png)  
+
+  - ![img_2.png](img_2.png)
+
+  - ![img_3.png](img_3.png)
+
